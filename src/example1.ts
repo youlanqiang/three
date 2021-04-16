@@ -1,9 +1,8 @@
 /**
- * canvas的入门
+ * canvas的入门教学
  */
 
-console.log("start")
-example1();''
+example1();
 
 function example1(): void {
 //第一步拿到 canvas的标签
