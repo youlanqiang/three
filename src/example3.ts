@@ -10,6 +10,7 @@ function example3(): void {
     let canvas: HTMLCanvasElement = document.getElementById('app') as HTMLCanvasElement;
     let ctx: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
 
+
     canvas.height = 500;
     canvas.width = 500;
     canvas.style.border = '1px solid #000'
