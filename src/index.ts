@@ -1,59 +1,38 @@
-import * as THREE from "three";
-import {Vector3} from "three/src/math/Vector3";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+/**
+ * canvas绘制图片
+ */
 
 
-let pixelRatio:number = window.devicePixelRatio //像素
-let s = 600// 三维场景显示范围控制系数，系数越大，显示的范围越大
-let k = 0
-let scene:THREE.Scene|null; //场景
-let camera:THREE.Camera|null; //相机
-let renderer:THREE.WebGLRenderer|null; //渲染器
-let light:THREE.HemisphereLight; //自然光源
-let axesHelper:THREE.AxesHelper; //辅助内容
-let controls:OrbitControls; //控制器
-let three:HTMLElement; //dom结点
-let  animationFlag:number|null = null;
+index()
 
-//初始化项目
-function init():void{
-    scene = new THREE.Scene();
-    k = window.innerWidth/ window.innerHeight //窗口高宽比
-    camera = new THREE.PerspectiveCamera(50, k, 0.1, 500000)
-    camera.position.set(0, 500, 500)
+function index():void{
+    console.log('hello')
+    let canvas: HTMLCanvasElement = document.getElementById('app') as HTMLCanvasElement;
+    let ctx: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
+    canvas.style.border = '1px solid red'
+    canvas.width = 500
+    canvas.height = 500
 
-    //初始化渲染器 antialias=抗锯齿
-    renderer = new THREE.WebGLRenderer({antialias:true, alpha:true})
-    renderer.setPixelRatio(pixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0xFFFFFF);
+    //第一步 创建图片的dom对象
+    let img:HTMLImageElement = new Image()
+    img.src = require('./images/th.jpeg').default
+    img.onload = ()=>{
+        //图片加载完成之后将图片绘制到canvas上
+        ctx.drawImage(img, 100, 100)
 
-    let three = document.getElementById('three');
-    three&&three.appendChild(renderer.domElement);
+        for(let i = 0; i < 10; i++){
+            ctx.drawImage(img , 100+20*i, 100+i*20, 20, 20)
 
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.target = new Vector3(0,0,0);
-    controls.update();
+            //保持图片的宽高比
+            let ow = img.width
+            let oh = img.height
+            ctx.drawImage(img, 100, 100, 400, 400*oh/ow);
+        }
 
-    light = new THREE.HemisphereLight(0xFFFFFF, 0x000000, 1);
-    scene.add(light);
 
-    axesHelper = new THREE.AxesHelper(100);
-    scene.add(axesHelper);
-
-    const size = 10000;
-    const divisions = 200;
-
-    const gridHelper = new THREE.GridHelper( size, divisions );
-    scene.add( gridHelper );
-}
-
-init();
-render();
-
-function render(){
-    if(renderer && scene && camera){
-        renderer.render(scene, camera);
+        //图片的裁剪
+        // sx,sy 裁剪图片的左上角坐标
+        // swidth: 裁剪图片的宽度, sheight: 裁剪图片的高度
+        ctx.drawImage(img, 100, 100, 100, 100, 100, 100, 100, 100)
     }
-    animationFlag = requestAnimationFrame(render);
 }

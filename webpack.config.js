@@ -31,11 +31,22 @@ module.exports = {
                 },{
                     loader:"css-loader"
                 }]
+            }, {
+                test: /\.(jpg|jpeg|png|gif)$/, //打包的文件以jpg,png,gif结尾
+                use: {
+                    loader: 'file-loader',
+                    options: { //file-loader配置项
+                        //placeholder 占位符
+                        name: '[name]_[hash].[ext]',//保持打包后的图片名字和原来一样
+                        outputPath: 'images/'
+                        //打包后的图片输出到images文件夹中
+                    }
+                }
             }
         ]
     },
     resolve:{
-        extensions:['.tsx','.ts','.js']
+        extensions:['.tsx','.ts','.js','.jpg']
     },
 
 }
